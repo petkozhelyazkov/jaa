@@ -25,4 +25,8 @@ public class Student {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
 }
