@@ -3,6 +3,8 @@ package com.example.demo.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,19 +23,13 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@JsonIgnore
+    @JsonIgnore
     private Long id;
-
 
     @Column(name = "name")
     private String name;
 
-     // Полето "specialty" е правилно дефинирано като ManyToMany
     @ManyToMany
-    @JoinTable(
-        name = "course_specialty",
-        joinColumns = @JoinColumn(name = "course_id"),
-        inverseJoinColumns = @JoinColumn(name = "specialty_id")
-    )
+    @JoinTable(name = "course_specialty", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialty = new HashSet<>();
 }

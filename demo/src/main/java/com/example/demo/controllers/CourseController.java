@@ -1,11 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.CourseDto;
-import com.example.demo.dto.FacultyDto;
 import com.example.demo.models.Course;
-import com.example.demo.models.Faculty;
 import com.example.demo.services.CourseService;
-import com.example.demo.services.FacultyService;
 
 import lombok.RequiredArgsConstructor;
 
