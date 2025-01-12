@@ -1,24 +1,20 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.CourseDto;
-import com.example.demo.dto.FacultyDto;
-import com.example.demo.mappers.CourseMapper;
-import com.example.demo.mappers.FacultyMapper;
-import com.example.demo.models.Course;
-import com.example.demo.models.Faculty;
-import com.example.demo.models.Specialty;
-import com.example.demo.repositories.CourseRepo;
-import com.example.demo.repositories.FacultyRepo;
-import com.example.demo.repositories.SpecialtyRepo;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.demo.dto.CourseDto;
+import com.example.demo.mappers.CourseMapper;
+import com.example.demo.models.Course;
+import com.example.demo.models.Specialty;
+import com.example.demo.repositories.CourseRepo;
+import com.example.demo.repositories.SpecialtyRepo;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -43,11 +39,13 @@ public class CourseService {
         return courseRepo.findAll();
     }
 
+    @Transactional
     public Course save(CourseDto dto) {
         Course course = courseMapper.convertDtoToEntity(dto);
         return courseRepo.saveAndFlush(course);
     }
 
+    @Transactional
     public Course update(Long courseId, CourseDto dto) {
         Optional<Course> course = courseRepo.findById(courseId);
         if (course.isPresent()) {
@@ -59,6 +57,7 @@ public class CourseService {
         return null;
     }
 
+    @Transactional
     public Course partialUpdate(Long courseId, CourseDto dto) {
         Optional<Course> course = courseRepo.findById(courseId);
         if (course.isPresent()) {
@@ -70,6 +69,7 @@ public class CourseService {
         return null;
     }
 
+    @Transactional
     public Course delete(Long courseId) {
         Optional<Course> course = courseRepo.findById(courseId);
         if (course.isPresent()) {
@@ -81,6 +81,7 @@ public class CourseService {
         return null;
     }
 
+    @Transactional
     public Course addCourseToSpecialty(Long courseId, Long specialtyId) {
         Optional<Course> course = courseRepo.findById(courseId);
         Optional<Specialty> specialty = specialtyRepo.findById(specialtyId);
@@ -94,4 +95,18 @@ public class CourseService {
 
         return null;
     }
+
+    @Transactional
+    public Course removeCourseFromSpecialty(Long courseId, Long specialtyId) {
+        Optional<Course> course = courseRepo.findById(courseId);
+        Optional<Specialty> specialty = specialtyRepo.findById(specialtyId);
+
+        if (course.isPresent() && specialty.isPresent()) {
+            Course temp = course.get();
+            specialtyRepo.removeCourseFromSpecialty(temp.getId(), specialty.get().getId());
+            return temp;
+        }
+        return null;
+    }
+    
 }

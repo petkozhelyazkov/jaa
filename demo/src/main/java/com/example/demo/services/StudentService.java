@@ -1,5 +1,11 @@
 package com.example.demo.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.dto.StudentDto;
 import com.example.demo.mappers.StudentMapper;
 import com.example.demo.models.Specialty;
@@ -9,12 +15,6 @@ import com.example.demo.repositories.StudentRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -80,14 +80,13 @@ public class StudentService {
     public Student updateSpecialty(Integer facultyNumber, Long specialtyId) {
         Optional<Student> student = studentRepo.findByFacultyNumber(facultyNumber);
         Optional<Specialty> specialty = specialtyRepo.findById(specialtyId);
-
+    
         if (student.isPresent() && specialty.isPresent()) {
             Student temp = student.get();
-            studentRepo.updateSpecialty(specialty.get(), facultyNumber);
-
-            return temp;
+            temp.setSpecialty(specialty.get());
+            return studentRepo.saveAndFlush(temp); // Уверяваме се, че specialty е част от върнатия Student
         }
-
+    
         return null;
     }
 }

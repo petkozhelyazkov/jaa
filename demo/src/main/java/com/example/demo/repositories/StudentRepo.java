@@ -1,14 +1,16 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.Specialty;
-import com.example.demo.models.Student;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import com.example.demo.models.Specialty;
+import com.example.demo.models.Student;
 
 @Repository
 public interface StudentRepo extends JpaRepository<Student, Long> {
@@ -18,6 +20,7 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
     Optional<Student> findByFacultyNumber(Integer num);
 
     @Modifying
-    @Query("UPDATE Student SET specialty = :specialty WHERE facultyNumber = :facultyNumber")
-    void updateSpecialty(Specialty specialty, Integer facultyNumber);
+    @Transactional
+    @Query("UPDATE Student s SET s.specialty = :specialty WHERE s.facultyNumber = :facultyNumber")
+    int updateSpecialty(@Param("specialty") Specialty specialty, @Param("facultyNumber") int facultyNumber);
 }

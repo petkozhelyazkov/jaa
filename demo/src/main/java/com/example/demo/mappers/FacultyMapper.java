@@ -14,6 +14,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface FacultyMapper {
 
     @Mapping(target = "name", source = "dto.name")
+    @Mapping(target = "id", source = "id") // Добавяне на mapping за ID
     Faculty convertDtoToEntity(FacultyDto dto, Long id);
 
     Faculty convertDtoToEntity(FacultyDto dto);

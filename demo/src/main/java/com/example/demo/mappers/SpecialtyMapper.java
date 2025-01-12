@@ -14,9 +14,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface SpecialtyMapper {
 
     @Mapping(target = "name", source = "dto.name")
-    @Mapping(target = "faculty.id", source = "dto.facultyId")
+    @Mapping(target = "faculty", expression = "java(new com.example.demo.models.Faculty(dto.facultyId()))")
     Specialty convertDtoToEntity(SpecialtyDto dto, Long id);
 
+    @Mapping(target = "faculty", expression = "java(new com.example.demo.models.Faculty(dto.facultyId()))")
     Specialty convertDtoToEntity(SpecialtyDto dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
